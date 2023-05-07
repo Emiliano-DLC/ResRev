@@ -1,12 +1,13 @@
 from flask import render_template, Blueprint, request
 from pymongo import MongoClient
 from flask_cors import CORS
+import certifi
 
 restaurants = Blueprint('restaurants', __name__)
 
 CORS(restaurants)
 
-client = MongoClient('mongodb+srv://sc_delaEmi:u2JsEd0nzYssgaMd@cluster0.8qczawe.mongodb.net/test', 5000)
+client = MongoClient(f"mongodb+srv://sc_delaEmi:u2JsEd0nzYssgaMd@cluster0.8qczawe.mongodb.net/test?retryWrites=true&w=majority",tlsCAFile=certifi.where())
 db=client['test']
 res = db.restaurants
 

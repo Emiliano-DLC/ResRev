@@ -9,6 +9,7 @@
 python -m pip install flask
 pip install pymongo
 pip install flask_cors
+pip install certifi
 ```
 
 ## To initialize the program
