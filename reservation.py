@@ -7,7 +7,7 @@ reservation = Blueprint('reservation', __name__)
 
 CORS(reservation)
 
-
+client = MongoClient(f"mongodb+srv://sc_delaEmi:u2JsEd0nzYssgaMd@cluster0.8qczawe.mongodb.net/test?retryWrites=true&w=majority",tlsCAFile=certifi.where()) 
 db=client['test']
 reservations=client['reservations']
 
