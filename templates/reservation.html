@@ -17,7 +17,13 @@
         <form action="{{ url_for('reservation.confirmationPage') }}" method="POST">
 
           <div class="form-group">
-            <input type="text" readonly class="form-control" id="restaurantName" name="restaurantName" value="{{ restaurant }}">
+            <label for="inputGuess">Location</label>
+            <input type="text" readonly class="form-control" id="restaurantName" name="restaurantName" value="{{ name }}">
+          </div>
+
+          <div class="form-group">
+            <label for="inputGuess">Selected time</label>
+            <input type="text" readonly class="form-control" id="seletedHour" name="seletedHour" value="{{ hour }}">
           </div>
           
           <div class="form-group">
@@ -30,17 +36,6 @@
             <input type="number" class="form-control" id="inputGuess" name="inputGuess" aria-describedby="guestNumber" placeholder="Enter number of gest">
           </div>
 
-          <div class="form-group">
-            <label for="seletedHour">Select time</label>
-            <select multiple class="form-control" id="seletedHour" name="seletedHour">
-              <option>12-1</option>
-              <option>1-2</option>
-              <option>2-3</option>
-              <option>3-4</option>
-              <option>4-5</option>
-            </select>
-          </div>
-
           <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="ada" name="ada">
             <label class="form-check-label" for="ada">ADA needed?</label>
@@ -49,6 +44,14 @@
           <div class="form-group">
             <label for="comments">Leave us a comment</label>
             <textarea class="form-control" id="comments" name="comments" rows="3" placeholder="n/a"></textarea>
+          </div>
+
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="selectedLocation" name="selectedLocation" value="{{ location }}" hidden="hidden">
+          </div>
+
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="tabId" name="tabId" value="{{ tab }}" hidden="hidden">
           </div>
 
           <button type="submit" class="btn btn-default">Submit</button>

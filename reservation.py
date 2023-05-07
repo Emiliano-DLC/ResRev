@@ -9,40 +9,72 @@ CORS(reservation)
 
 client = MongoClient(f"mongodb+srv://sc_delaEmi:u2JsEd0nzYssgaMd@cluster0.8qczawe.mongodb.net/test?retryWrites=true&w=majority",tlsCAFile=certifi.where()) 
 db=client['test']
-reservations=client['reservations']
+reservations=db.reservations
+lay = db.spaces
 
 
 #Redirect to the specific restaurant
 @reservation.route('/respageBurritos', methods=['POST'])
 def respageBurritos():
-    return render_template("./reservation.html", restaurant="Burrito")
+    hour = request.form.get('restaurantHour')
+    location = request.form.get('restaurantType')
+    name = request.form.get('restaurantId')
+    tab = request.form.get('tabId')
+    print(name)
+    return render_template("./reservation.html", restaurant="Burrito", hour=hour, location=location, name=name, tab=tab)
 
 @reservation.route('/respageBurger', methods=['POST'])
 def respageBurger():
-    return render_template("./reservation.html", restaurant="Burger")
+    hour = request.form.get('restaurantHour')
+    location = request.form.get('restaurantType')
+    name = request.form.get('restaurantId')
+    tab = request.form.get('tabId')
+    return render_template("./reservation.html", restaurant="Burger", hour=hour, location=location, name=name, tab=tab)
 
 @reservation.route('/respageMenudo', methods=['POST'])
 def respageMenudo():
-    return render_template("./reservation.html", restaurant="Menudo")
+    hour = request.form.get('restaurantHour')
+    location = request.form.get('restaurantType')
+    name = request.form.get('restaurantId')
+    tab = request.form.get('tabId')
+    return render_template("./reservation.html", restaurant="Menudo", hour=hour, location=location, name=name, tab=tab)
 
 @reservation.route('/respagePizza', methods=['POST'])
 def respagePizza():
-    return render_template("./reservation.html", restaurant="Pizza")
+    hour = request.form.get('restaurantHour')
+    location = request.form.get('restaurantType')
+    name = request.form.get('restaurantId')
+    tab = request.form.get('tabId')
+    print(name)
+    return render_template("./reservation.html", restaurant="Pizza", hour=hour, location=location, name=name, tab=tab)
 
 @reservation.route('/respageChinese', methods=['POST'])
 def respageChinese():
-    return render_template("./reservation.html", restaurant="Chinese")
+    hour = request.form.get('restaurantHour')
+    location = request.form.get('restaurantType')
+    name = request.form.get('restaurantId')
+    tab = request.form.get('tabId')
+    return render_template("./reservation.html", restaurant="Chinese", hour=hour, location=location, name=name, tab=tab)
 #-------------------------------------------------------------------------
 
 @reservation.route('/confirmationPage', methods=['POST'])
 def confirmationPage():
-    db.reservations.insert_one({
+    arr = list(lay.find({'restaurantName': request.form.get('restaurantName'), 'hour': request.form.get('seletedHour'),"tab_id": request.form.get('tabId')}, {"_id":0, "restaurantName":1, "hour":1, "tab_id":1, "avalible":1}))
+    if arr[0]["avalible"]:
+        db.reservations.insert_one({
         'restaurantName': request.form.get('restaurantName'),
         'reservationName': request.form.get('nameInput'),
         'guests': request.form.get('inputGuess'),
         'times': request.form.get('seletedHour'),
         'adaneeded': request.form.get('ada'),
-        'coments': request.form.get('comments')
-    })
+        'coments': request.form.get('comments')})
 
-    return render_template("./confirmationPage.html")
+        db.lay.update_one(
+            {},
+            {}
+        )
+
+        return render_template("./confirmationPage.html")
+    else:
+        return "Invalid"
+

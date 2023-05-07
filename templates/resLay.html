@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+  <html lang="en">
+
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">  
+      <title>{{ title }}</title>
+      
+    </head>
+
+
+    <body>
+
+        {% for layout in arr %}
+        {% if layout["avalible"] == true %}
+        <form method="post" action="{{ url_for(link) }}"  method="POST">
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="restaurantHour" name="restaurantHour" value="{{ layout["hour"] }}" hidden="hidden">
+          </div>
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="restaurantType" name="restaurantType" value="{{ location }}" hidden="hidden">
+          </div>
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="restaurantId" name="restaurantId" value="{{ layout["restaurantName"] }}" hidden="hidden">
+          </div>
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="tabId" name="tabId" value="{{ layout["tab_id"] }}" hidden="hidden">
+          </div>
+
+          <button type="submit" class="btn btn-primary">{{layout["tab_id"]}}</button>
+
+        </form>
+        {% else %}
+        <form method="post" action="{{ url_for(link) }}"  method="POST">
+
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="restaurantHour" name="restaurantHour" value="{{ layout["hour"] }}" hidden="hidden">
+          </div>
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="restaurantType" name="restaurantType" value="{{ location }}" hidden="hidden">
+          </div>
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="restaurantId" name="restaurantId" value="{{ layout["resataurantName"] }}" hidden="hidden">
+          </div>
+          <div class="form-group">
+            <input type="text" readonly class="form-control" id="tabId" name="tabId" value="{{ layout["tab_id"] }}" hidden="hidden">
+          </div>
+
+          <button type="submit" class="btn btn-danger">{{layout["tab_id"]}}</button>
+
+        </form>
+        {% endif %}         
+        <br>
+        {% endfor %}
+
+    </body>
+
+    
+    
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+  </html>    
