@@ -10,10 +10,13 @@ CORS(reservation)
 client = MongoClient(f"mongodb+srv://sc_delaEmi:u2JsEd0nzYssgaMd@cluster0.8qczawe.mongodb.net/test?retryWrites=true&w=majority",tlsCAFile=certifi.where()) 
 db=client['test']
 reservations=db.reservations
+
+#Reference to the spaces collection in the database
+#lay as of layout
 lay = db.spaces
 
 
-#Redirect to the specific restaurant
+#Redirect to the specific restaurant in html
 @reservation.route('/respageBurritos', methods=['POST'])
 def respageBurritos():
     hour = request.form.get('restaurantHour')

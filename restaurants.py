@@ -33,6 +33,9 @@ def restaurant_layout():
     location = resarr[0]["location"]
     return render_template("./resLay.html", title="Layout", arr=arr, link=link, location=location)
 
+@restaurants.route("/invalid" , methods=['POST'])
+def invalid():
+    return render_template("./invalid.html")
 
 
 
