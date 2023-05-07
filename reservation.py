@@ -59,7 +59,12 @@ def respageChinese():
 
 @reservation.route('/confirmationPage', methods=['POST'])
 def confirmationPage():
+    print(request.form.get('restaurantName'))
+    print(request.form.get('tabId'))
+    print(request.form.get('seletedHour'))
+
     arr = list(lay.find({'restaurantName': request.form.get('restaurantName'), 'hour': request.form.get('seletedHour'),"tab_id": request.form.get('tabId')}, {"_id":0, "restaurantName":1, "hour":1, "tab_id":1, "avalible":1}))
+    print(arr[0]["avalible"])
     if arr[0]["avalible"]:
         db.reservations.insert_one({
         'restaurantName': request.form.get('restaurantName'),
@@ -69,9 +74,9 @@ def confirmationPage():
         'adaneeded': request.form.get('ada'),
         'coments': request.form.get('comments')})
 
-        db.lay.update_one(
-            {},
-            {}
+        lay.update_one(
+            { 'tab_id':request.form.get('tabId'), 'restaurantName': request.form.get('restaurantName'), 'hour': request.form.get('seletedHour')},
+            {"$set": { "avalible": False }}
         )
 
         return render_template("./confirmationPage.html")
