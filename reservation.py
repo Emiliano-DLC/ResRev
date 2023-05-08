@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, Blueprint, url_for, request
 from pymongo import MongoClient
 from flask_cors import CORS
 import certifi
+import random
+import string
 
 reservation = Blueprint('reservation', __name__)
 
@@ -62,9 +64,11 @@ def respageChinese():
 
 @reservation.route('/confirmationPage', methods=['POST'])
 def confirmationPage():
-    print(request.form.get('restaurantName'))
-    print(request.form.get('tabId'))
-    print(request.form.get('seletedHour'))
+    #Generates random key
+    letters=string.ascii_lowercase
+    result=''.join(random.choice(letters) for i in range(5))
+    print(result)
+    #---------------------------------
 
     arr = list(lay.find({'restaurantName': request.form.get('restaurantName'), 'hour': request.form.get('seletedHour'),"tab_id": request.form.get('tabId')}, {"_id":0, "restaurantName":1, "hour":1, "tab_id":1, "avalible":1}))
     print(arr[0]["avalible"])
@@ -75,14 +79,16 @@ def confirmationPage():
         'guests': request.form.get('inputGuess'),
         'times': request.form.get('seletedHour'),
         'adaneeded': request.form.get('ada'),
-        'coments': request.form.get('comments')})
+        'coments': request.form.get('comments'),
+        'key': result})
+        
 
         lay.update_one(
             { 'tab_id':request.form.get('tabId'), 'restaurantName': request.form.get('restaurantName'), 'hour': request.form.get('seletedHour')},
             {"$set": { "avalible": False }}
         )
 
-        return render_template("./confirmationPage.html")
+        return render_template("./confirmationPage.html", result=result)
     else:
         return "Invalid"
-
+    
