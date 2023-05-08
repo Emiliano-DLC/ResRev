@@ -104,7 +104,7 @@ def deleteReservation():
     name=request.form.get('userName')
     keyRes=request.form.get('keyRes')
     reservations.delete_one( {"reservationName": name, "key": keyRes})
-    return "Is deleted"
+    return render_template("./conPage.html", output="Query has been deleted")
 
 #---------------------------------------------------------------------
 
@@ -140,4 +140,4 @@ def editReservationQuery():
                        "coments": comments } }
         ))
     
-    return "Is is edited"
+    return render_template("./conPage.html", output="Query has been updated")
