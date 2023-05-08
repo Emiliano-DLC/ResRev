@@ -36,8 +36,11 @@ def restaurant_filter_byrating():
 def restaurant_layout():
     print(request.form.get('restaurantId'))
     print(request.form.get('seletedHour'))
+
     arr = list(lay.find({'restaurantName': request.form.get('restaurantId'), 'hour': request.form.get('seletedHour')}, {"_id":0, "restaurantName":1, "hour":1, "tab_id":1, "avalible":1}))
+
     resarr = list(res.find({ "name": request.form.get('restaurantId')}, {"_id":0, "location":1, "hours":1, "link":1, "description":1, "name":1}))
+    
     link = resarr[0]["link"]
     location = resarr[0]["location"]
     return render_template("./resLay.html", title="Layout", arr=arr, link=link, location=location)
