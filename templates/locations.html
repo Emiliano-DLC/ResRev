@@ -1,93 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+  <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <title>Reservation Homepage</title>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">  
+      <title>Reservation Homepage</title>
+      
+    </head>
 
-</head>
 
+    <body>
 
-<body>
-
-  <form action="{{ url_for('restaurants.restaurant_filter') }}" method="POST">
-    <div class="form-group">
-      <label for="inputState">Filter</label>
-      <select id="filterRestaurants" name="filterRestaurants" class="form-control">
-        <option selected>Select Category</option>
-        <option>mexican</option>
-        <option>fast food</option>
-        <option>oriental</option>
-      </select>
-    </div>
-    <button type="submit">Submit</button>
-
-  </form>
-  <form action="{{ url_for('restaurants.restaurant_filter_byrating') }}" method="POST">
-    <div class="form-group">
-      <label for="minRating">Minimum Rating</label>
-      <select id="minRating" name="minRating" class="form-control">
-        <option value="1">1 star</option>
-        <option value="2">2 stars</option>
-        <option value="3">3 stars</option>
-        <option value="4">4 stars</option>
-        <option value="5">5 stars</option>
-      </select>
-    </div>
-    <button type="submit">Submit</button>
-  </form>
-
-  <br>
-
-  <div class="accordion" id="accordionExample">
-    {% for instance in arr %}
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="heading{{instance[" location"]}}">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{instance["
-          location"]}}" aria-expanded="true" aria-controls="collapse{{instance[" location"]}}">
-          {{instance["name"]}}
-        </button>
-      </h2>
-      <div id="collapse{{instance[" location"]}}" class="accordion-collapse collapse show"
-        aria-labelledby="heading{{instance[" location"]}}" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-          {{instance["description"]}}
-
-          <form method="post" action="{{ url_for('restaurants.restaurant_layout') }}" method="POST">
-            <div class="form-group">
-              <label for="seletedHour">Select time</label>
-              <select class="form-control" id="seletedHour" name="seletedHour">
-                <option>12-1</option>
-                <option>1-2</option>
-                <option>2-3</option>
-                <option>3-4</option>
-                <option>4-5</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <input type="text" readonly class="form-control" id="restaurantId" name="restaurantId"
-                value="{{ instance[" name"] }}" hidden="hidden">
-            </div>
-
-            <button type="submit">Click me!</button>
-          </form>
-
+      <form action="{{ url_for('restaurants.restaurant_filter') }}" method="POST">
+        <div class="form-group">
+          <label for="inputState">Filter</label>
+          <select id="filterRestaurants" name="filterRestaurants"class="form-control">
+            <option selected>Select Category</option>
+            <option>mexican</option>
+            <option>fast food</option>
+            <option>oriental</option>
+          </select>
         </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+        <button type="submit">Submit</button>
+      </form>
+
+      <br>
+
+      <form action="{{ url_for('restaurants.restaurant_filter_byrating') }}" method="POST">
+        <div class="form-group">
+          <label for="minRating">Minimum Rating</label>
+          <select id="minRating" name="minRating" class="form-control">
+            <option value="1">1 star</option>
+            <option value="2">2 stars</option>
+            <option value="3">3 stars</option>
+            <option value="4">4 stars</option>
+            <option value="5">5 stars</option>
+          </select>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    
+      <br>
+                
+                <div class="accordion" id="accordionExample">
+                  {% for instance in arr %}
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{instance["location"]}}">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{instance["location"]}}" aria-expanded="true" aria-controls="collapse{{instance["location"]}}">
+                        {{instance["name"]}}
+                      </button>
+                    </h2>
+                    <div id="collapse{{instance["location"]}}" class="accordion-collapse collapse show" aria-labelledby="heading{{instance["location"]}}" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        {{instance["description"]}} 
+
+                        <form method="post" action="{{ url_for('restaurants.restaurant_layout') }}"  method="POST">
+                          <div class="form-group">
+                            <label for="seletedHour">Select time</label>
+                            <select class="form-control" id="seletedHour" name="seletedHour">
+                              <option>12-1</option>
+                              <option>1-2</option>
+                              <option>2-3</option>
+                              <option>3-4</option>
+                              <option>4-5</option>
+                            </select>
+                          </div>
+
+                          <div class="form-group">
+                            <input type="text" readonly class="form-control" id="restaurantId" name="restaurantId" value="{{ instance["name"] }}" hidden="hidden">
+                          </div>
+                          
+                          <button type="submit">Click me!</button>
+                        </form>
+                      
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
 
 
-</body>
+    </body>
+
+    
+    
 
 
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-
-</html>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+  </html>    

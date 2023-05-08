@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+  <html lang="en">
+
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">  
+      <title>Delete Reservation</title>
+      
+    </head>
+
+
+    <body>
+
+        <form action="{{ url_for('reservation.editReservationQuery') }}" method="POST">
+            <div class="form-group">
+                <label>The restaurant is:</label>
+                <input type="text" readonly class="form-control" id="restaurantName" name="restaurantName" value="{{query["restaurantName"]}}">
+              </div>
+
+              <div class="form-group">
+                <label>Change Name:</label>
+                <input type="text" readonly class="form-control" id="userName" name="userName" value="{{query["reservationName"]}}">
+              </div>
+
+              <div class="form-group">
+                <label>The key is:</label>
+                <input type="text" readonly class="form-control" id="keyRes" name="keyRes" value="{{query["key"]}}">
+              </div>
+
+              <div class="form-group">
+                <label>Enter Numbber of guest</label>
+                <input type="number" class="form-control" id="guests" name="guests"  value="{{query["guests"]}}">
+              </div>
+
+              <div class="form-group">
+                <label>Enter time <label>
+                <input type="text" readonly class="form-control" id="times" name="times" value="{{query["times"]}}">
+              </div>
+
+              <div class="form-group">
+                <label>Change comment</label>
+                <input type="text" class="form-control" id="coments" name="coments" value="{{query["coments"]}}">
+              </div>
+
+            <button type="submit">Submit</button>
+        </form>
+        
+    </body>
+
+    
+    
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+  </html>    

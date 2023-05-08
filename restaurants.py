@@ -12,17 +12,26 @@ db=client['test']
 res = db.restaurants
 lay = db.spaces
 
-
+#Restaurant list
 @restaurants.route("/restaurants")
 def restaurant_list():
     arr = list(res.find({}, {"_id":0, "location":1, "hours":1, "link":1, "description":1, "name":1}))
     return render_template("./locations.html", title="locations", arr=arr)
 
+#Filters to search for a specific restaurant
 @restaurants.route("/filter_restaurants" , methods=['POST'])
 def restaurant_filter():
     arr = list(res.find({ "category": request.form.get('filterRestaurants')}, {"_id":0, "location":1, "hours":1, "link":1, "description":1, "name":1}))
     return render_template("./locations.html", title="locations", arr=arr)
 
+@restaurants.route("/filter_restaurants_byrating" , methods=['POST'])
+def restaurant_filter_byrating():
+    rating = int(request.form.get('minRating'))
+    arr= list(res.find({ "rating": rating}, {"_id":0, "location":1, "hours":1, "link":1, "description":1, "name":1, "rating": 1}))
+    return render_template("./locations.html", title="locations", arr=arr)
+
+
+#Print the restaurant layout as per table
 @restaurants.route("/filter_restaurants_byrating" , methods=['POST'])
 def restaurant_filter_byrating():
     rating = int(request.form.get('minRating'))
@@ -39,6 +48,8 @@ def restaurant_layout():
     location = resarr[0]["location"]
     return render_template("./resLay.html", title="Layout", arr=arr, link=link, location=location)
 
+
+#If selected an invalid table it redirects to invalid page
 @restaurants.route("/invalid" , methods=['POST'])
 def invalid():
     return render_template("./invalid.html")

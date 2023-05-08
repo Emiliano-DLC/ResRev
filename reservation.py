@@ -1,7 +1,9 @@
 from flask import Flask, render_template, redirect, Blueprint, url_for, request
-from pymongo import MongoClient
+from pymongo import MongoClient, ReturnDocument
 from flask_cors import CORS
 import certifi
+import random
+import string
 
 reservation = Blueprint('reservation', __name__)
 
@@ -63,9 +65,11 @@ def respageChinese():
 
 @reservation.route('/confirmationPage', methods=['POST'])
 def confirmationPage():
-    print(request.form.get('restaurantName'))
-    print(request.form.get('tabId'))
-    print(request.form.get('seletedHour'))
+    #Generates random key
+    letters=string.ascii_lowercase
+    result=''.join(random.choice(letters) for i in range(5))
+    print(result)
+    #---------------------------------
 
     arr = list(lay.find({'restaurantName': request.form.get('restaurantName'), 'hour': request.form.get('seletedHour'),"tab_id": request.form.get('tabId')}, {"_id":0, "restaurantName":1, "hour":1, "tab_id":1, "avalible":1}))
     print(arr[0]["avalible"])
@@ -76,14 +80,65 @@ def confirmationPage():
         'guests': request.form.get('inputGuess'),
         'times': request.form.get('seletedHour'),
         'adaneeded': request.form.get('ada'),
-        'coments': request.form.get('comments')})
+        'coments': request.form.get('comments'),
+        'key': result})
+        
 
         lay.update_one(
             { 'tab_id':request.form.get('tabId'), 'restaurantName': request.form.get('restaurantName'), 'hour': request.form.get('seletedHour')},
             {"$set": { "avalible": False }}
         )
 
-        return render_template("./confirmationPage.html")
+        return render_template("./confirmationPage.html", result=result)
     else:
         return "Invalid"
+    
+#---------------------------------------------------------------------
 
+
+@reservation.route('/deleteReservation')
+def deleteReservationForm():
+    return render_template("./deleteReservation.html")
+
+@reservation.route('/deleteReservationQuery', methods=['POST'])
+def deleteReservation():
+    name=request.form.get('userName')
+    keyRes=request.form.get('keyRes')
+    reservations.delete_one( {"reservationName": name, "key": keyRes})
+    return "Is deleted"
+
+#---------------------------------------------------------------------
+
+@reservation.route('/editReservation')
+def editReservationForm():
+    return render_template("./editReservationQuery.html")
+
+@reservation.route('/editReservationFinder', methods=['POST'])
+def editReservationFinder():
+    name=request.form.get('userName')
+    keyRes=request.form.get('keyRes')
+
+    arr=reservations.find(
+            { "reservationName": name, "key": keyRes},
+            { "reservationName":1, "guests":1, "adaneeded":1, "coments":1, "restaurantName":1,"times":1, "key":1}
+        )
+    query=arr[0]
+    print(query)
+    return render_template("./editReservation.html", query=query)
+
+
+@reservation.route('/editReservationQuery', methods=['POST'])
+def editReservationQuery():
+    name=request.form.get('userName')
+    guestNo=request.form.get('guests')
+    keyRes=request.form.get('keyRes')
+    comments=request.form.get('coments')
+    print(name)
+
+    print(reservations.update_one(
+            { "reservationName":name, "key":keyRes},
+            { "$set": { "guests": guestNo,
+                       "coments": comments } }
+        ))
+    
+    return "Is is edited"
