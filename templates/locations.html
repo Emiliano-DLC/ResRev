@@ -26,6 +26,22 @@
       </form>
 
       <br>
+
+      <form action="{{ url_for('restaurants.restaurant_filter_byrating') }}" method="POST">
+        <div class="form-group">
+          <label for="minRating">Minimum Rating</label>
+          <select id="minRating" name="minRating" class="form-control">
+            <option value="1">1 star</option>
+            <option value="2">2 stars</option>
+            <option value="3">3 stars</option>
+            <option value="4">4 stars</option>
+            <option value="5">5 stars</option>
+          </select>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    
+      <br>
                 
                 <div class="accordion" id="accordionExample">
                   {% for instance in arr %}

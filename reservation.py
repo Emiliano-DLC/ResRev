@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, Blueprint, url_for, request
-from pymongo import MongoClient
+from pymongo import MongoClient, ReturnDocument
 from flask_cors import CORS
 import certifi
 import random
@@ -92,3 +92,52 @@ def confirmationPage():
     else:
         return "Invalid"
     
+#---------------------------------------------------------------------
+
+
+@reservation.route('/deleteReservation')
+def deleteReservationForm():
+    return render_template("./deleteReservation.html")
+
+@reservation.route('/deleteReservationQuery', methods=['POST'])
+def deleteReservation():
+    name=request.form.get('userName')
+    keyRes=request.form.get('keyRes')
+    reservations.delete_one( {"reservationName": name, "key": keyRes})
+    return "Is deleted"
+
+#---------------------------------------------------------------------
+
+@reservation.route('/editReservation')
+def editReservationForm():
+    return render_template("./editReservationQuery.html")
+
+@reservation.route('/editReservationFinder', methods=['POST'])
+def editReservationFinder():
+    name=request.form.get('userName')
+    keyRes=request.form.get('keyRes')
+
+    arr=reservations.find(
+            { "reservationName": name, "key": keyRes},
+            { "reservationName":1, "guests":1, "adaneeded":1, "coments":1, "restaurantName":1,"times":1, "key":1}
+        )
+    query=arr[0]
+    print(query)
+    return render_template("./editReservation.html", query=query)
+
+
+@reservation.route('/editReservationQuery', methods=['POST'])
+def editReservationQuery():
+    name=request.form.get('userName')
+    guestNo=request.form.get('guests')
+    keyRes=request.form.get('keyRes')
+    comments=request.form.get('coments')
+    print(name)
+
+    print(reservations.update_one(
+            { "reservationName":name, "key":keyRes},
+            { "$set": { "guests": guestNo,
+                       "coments": comments } }
+        ))
+    
+    return "Is is edited"
