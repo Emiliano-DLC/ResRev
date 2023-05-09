@@ -15,12 +15,12 @@
         <form action="{{ url_for('reservation.editReservationFinder') }}" method="POST">
             <div class="form-group">
                 <label>Enter Your Name</label>
-                <input type="text" class="form-control" id="userName" name="userName">
+                <input type="text" class="form-control" id="userName" name="userName"placeholder="{{ alertMsg if alertMsg else 'User Name' }}" required>
               </div>
 
               <div class="form-group">
                 <label>Enter Your Key</label>
-                <input type="text" class="form-control" id="keyRes" name="keyRes">
+                <input type="text" class="form-control" id="keyRes" name="keyRes"placeholder="{{ alertMsg if alertMsg else 'Key' }}" required>
               </div>
 
             <button type="submit">Submit</button>

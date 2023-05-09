@@ -97,15 +97,20 @@ def confirmationPage():
 
 @reservation.route('/deleteReservation')
 def deleteReservationForm():
-    return render_template("./deleteReservation.html")
+   return render_template("./deleteReservation.html")
 
 @reservation.route('/deleteReservationQuery', methods=['POST'])
 def deleteReservation():
-    name=request.form.get('userName')
-    keyRes=request.form.get('keyRes')
-    reservations.delete_one( {"reservationName": name, "key": keyRes})
-    return render_template("./conPage.html", output="Query has been deleted")
+    name = request.form.get('userName')
+    keyRes = request.form.get('keyRes')
 
+    reservation = reservations.find_one({"reservationName": name, "key": keyRes})
+    if reservation:
+        reservations.delete_one({"reservationName": name, "key": keyRes})
+        return render_template("./conPage.html", output="Query has been deleted")
+    else:
+        alertMsg = "Reservation does not exist"
+        return render_template("./deleteReservation.html", alertMsg=alertMsg)
 #---------------------------------------------------------------------
 
 @reservation.route('/editReservation')
@@ -117,14 +122,22 @@ def editReservationFinder():
     name=request.form.get('userName')
     keyRes=request.form.get('keyRes')
 
-    arr=reservations.find(
-            { "reservationName": name, "key": keyRes},
-            { "reservationName":1, "guests":1, "adaneeded":1, "coments":1, "restaurantName":1,"times":1, "key":1}
-        )
-    query=arr[0]
-    print(query)
-    return render_template("./editReservation.html", query=query)
-
+    reservation = reservations.find_one({"reservationName": name, "key": keyRes})
+    if reservation:
+        query = {
+            "reservationName": reservation["reservationName"],
+            "guests": reservation["guests"],
+            "adaneeded": reservation["adaneeded"],
+            "coments": reservation["coments"],
+            "restaurantName": reservation["restaurantName"],
+            "times": reservation["times"],
+            "key": reservation["key"]
+        }
+        return render_template("./editReservation.html", query=query)
+    else:
+        alertMsg = "Reservation does not exist"
+        return render_template("./editReservationQuery.html", alertMsg=alertMsg)
+        
 
 @reservation.route('/editReservationQuery', methods=['POST'])
 def editReservationQuery():
