@@ -18,6 +18,7 @@ reservations=db.reservations
 lay = db.spaces
 
 
+
 #Redirect to the specific restaurant in html
 @reservation.route('/respageBurritos', methods=['POST'])
 def respageBurritos():

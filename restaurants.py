@@ -32,6 +32,12 @@ def restaurant_filter_byrating():
 
 
 #Print the restaurant layout as per table
+@restaurants.route("/filter_restaurants_byrating" , methods=['POST'])
+def restaurant_filter_byrating():
+    rating = int(request.form.get('minRating'))
+    arr= list(res.find({ "rating": rating}, {"_id":0, "location":1, "hours":1, "link":1, "description":1, "name":1, "rating": 1}))
+    return render_template("./locations.html", title="locations", arr=arr)
+
 @restaurants.route("/restaurant_layout" , methods=['POST'])
 def restaurant_layout():
     print(request.form.get('restaurantId'))
@@ -74,6 +80,7 @@ def fill_res():
     restaurantName = {"Mexican Place", "Sunday Menudo", "Burger House", "Pizza place", "Comida china"}
     hour = {"12-1", "1-2", "2-3", "3-4", "4-5"}
     tab_id = {"1a", "1b","1c","1d","1e"}
+    rating = {1, 2, 3, 4, 5}
 
     for i in restaurantName:
         for j in hour:
@@ -82,6 +89,6 @@ def fill_res():
         'restaurantName': i,
         'hour': j,
         'tab_id': k,
-        'avalible': True
+        'avalible': True,
     })
     return "Database created"
