@@ -80,7 +80,8 @@ def confirmationPage():
         'times': request.form.get('seletedHour'),
         'adaneeded': request.form.get('ada'),
         'coments': request.form.get('comments'),
-        'key': result})
+        'key': result,
+        'tab_id':request.form.get('tabId')})
         
 
         lay.update_one(
@@ -104,9 +105,21 @@ def deleteReservation():
     name = request.form.get('userName')
     keyRes = request.form.get('keyRes')
 
+    reservationList = list(reservations.find({"reservationName": name, "key": keyRes}, {"_id":0, "tab_id":1, "restaurantName":1, "times":1}))
+
+    if len(reservationList) < 1:
+        alertMsg = "Invalid reservation"
+        return render_template("./deleteReservation.html", alertMsg=alertMsg)
+
     reservation = reservations.find_one({"reservationName": name, "key": keyRes})
+
     if reservation:
         reservations.delete_one({"reservationName": name, "key": keyRes})
+
+        lay.update_one(
+            { 'tab_id':reservationList[0]['tab_id'], 'restaurantName':reservationList[0]['restaurantName'], 'hour':reservationList[0]['times']},
+            {"$set": { "avalible": True }}
+        )
         return render_template("./conPage.html", output="Query has been deleted")
     else:
         alertMsg = "Reservation does not exist"
